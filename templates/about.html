@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% set active_page = 'about' %}
+
+{% block title %}About | ChilliNexis{% endblock %}
+
+{% block content %}
+
+    <section class="page-hero-banner">
+        <div class="page-hero-img" style="background-image: url('{{ url_for('static', filename='images/background.jpg') }}');"></div>
+        <div class="page-hero-fade"></div>
+        <div class="container page-hero-text">
+            
+            <h1>About Us</h1>
+        </div>
+    </section>
+
+    <section style="padding: 5rem 0; background: white;">
+        <div class="container" style="max-width: 900px;">
+            <h2 style="font-size: 1.7rem; font-weight: 600; margin-bottom: 2rem; color: var(--gray-900);">Our Mission</h2>
+            <p style="font-size: 1.125rem; line-height: 1.8; color: var(--gray-700); margin-bottom: 2rem;">
+                ChilliNexis is developed using deep learning and computer vision to help identify chilli plant diseases through leaf image analysis. The platform aims to make disease detection faster and more accessible by helping users recognize plant conditions at an early stage. It also incorporates chilli market price insights to help farmers understand market trends and make better-informed decisions about their crops. By bringing intelligent disease detection and agricultural market information together in one platform, ChilliNexis aims to support crop health management, reduce potential losses, and encourage smarter, data-driven farming practices.
+            </p>
+            <p style="font-size: 1.125rem; line-height: 1.8; color: var(--gray-700); margin-bottom: 2rem;">
+                ChilliNexis uses a deep learning-based Convolutional Neural Network (CNN) to identify five classes of chilli plant conditions from leaf images. The platform also provides chilli market price insights to support crop health management and informed farming decisions.
+            </p>
+
+            <h2 style="font-size: 1.7rem; font-weight: 600; margin: 3rem 0 2rem; color: var(--gray-900);">Technology Stack</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+                <div style="padding: 1.5rem; background: var(--gray-50); border-radius: var(--radius-lg); border-left: 4px solid var(--primary-color);">
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--gray-900);">
+                        <i class="fas fa-brain"></i> Deep Learning
+                    </h3>
+                    <p style="color: var(--gray-600); line-height: 1.6;">
+                        Python, TensorFlow, Keras, and a Convolutional Neural Network (CNN) for chilli plant condition detection.
+                    </p>
+                </div>
+                <div style="padding: 1.5rem; background: var(--gray-50); border-radius: var(--radius-lg); border-left: 4px solid var(--primary-color);">
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--gray-900);">
+                        <i class="fas fa-server"></i> Backend
+                    </h3>
+                    <p style="color: var(--gray-600); line-height: 1.6;">
+                         Python, Flask, MongoDB, and backend APIs for handling application data and supporting chilli disease detection and market information features.
+                    </p>
+                </div>
+                <div style="padding: 1.5rem; background: var(--gray-50); border-radius: var(--radius-lg); border-left: 4px solid var(--primary-color);">
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--gray-900);">
+                        <i class="fas fa-palette"></i> Frontend
+                    </h3>
+                    <p style="color: var(--gray-600); line-height: 1.6;">
+                        HTML5, CSS3, and JavaScript, Progressive Web App (PWA) with offline support and mobile camera access
+                    </p>
+                </div>
+            </div>
+
+            <h2 style="font-size: 1.7rem; font-weight: 600; margin: 3rem 0 2rem; color: var(--gray-900);">Detected Conditions</h2>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 1rem; margin-bottom: 1rem; background: var(--gray-50); border-radius: var(--radius-md); display: flex; align-items: flex-start; gap: 1rem;">
+                    <span style="width: 40px; height: 40px; min-width: 40px; min-height: 40px; flex-shrink: 0; background: var(--primary-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;"><i class="fas fa-1"></i></span>
+                    <div>
+                        <strong style="font-size: 1.125rem; color: var(--gray-900);">Chilli Whitefly</strong>
+                        <p style="margin: 0.25rem 0 0; color: var(--gray-600);">Sap-sucking insect infestation causing yellowing, stunted growth, and virus transmission</p>
+                    </div>
+                </li>
+                <li style="padding: 1rem; margin-bottom: 1rem; background: var(--gray-50); border-radius: var(--radius-md); display: flex; align-items: flex-start; gap: 1rem;">
+                    <span style="width: 40px; height: 40px; min-width: 40px; min-height: 40px; flex-shrink: 0; background: var(--primary-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;"><i class="fas fa-2"></i></span>
+                    <div>
+                        <strong style="font-size: 1.125rem; color: var(--gray-900);">Chilli Yellowish (Chlorosis)</strong>
+                        <p style="margin: 0.25rem 0 0; color: var(--gray-600);">Leaf yellowing caused by nutrient deficiency, viral infection, or root stress</p>
+                    </div>
+                </li>
+                <li style="padding: 1rem; margin-bottom: 1rem; background: var(--gray-50); border-radius: var(--radius-md); display: flex; align-items: flex-start; gap: 1rem;">
+                    <span style="width: 40px; height: 40px; min-width: 40px; min-height: 40px; flex-shrink: 0; background: var(--primary-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;"><i class="fas fa-3"></i></span>
+                    <div>
+                        <strong style="font-size: 1.125rem; color: var(--gray-900);">Chilli Anthracnose</strong>
+                        <p style="margin: 0.25rem 0 0; color: var(--gray-600);">Fungal disease caused by <em>Colletotrichum</em> spp., leading to fruit rot and significant yield loss</p>
+                    </div>
+                </li>
+                <li style="padding: 1rem; margin-bottom: 1rem; background: var(--gray-50); border-radius: var(--radius-md); display: flex; align-items: flex-start; gap: 1rem;">
+                    <span style="width: 40px; height: 40px; min-width: 40px; min-height: 40px; flex-shrink: 0; background: var(--primary-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;"><i class="fas fa-4"></i></span>
+                    <div>
+                        <strong style="font-size: 1.125rem; color: var(--gray-900);">Chilli Leaf Curl Virus</strong>
+                        <p style="margin: 0.25rem 0 0; color: var(--gray-600);">Begomovirus transmitted by whiteflies, causing severe leaf curling and crop failure</p>
+                    </div>
+                </li>
+                <li style="padding: 1rem; background: var(--primary-light); border-radius: var(--radius-md); display: flex; align-items: flex-start; gap: 1rem;">
+                    <span style="width: 40px; height: 40px; min-width: 40px; min-height: 40px; flex-shrink: 0; background: var(--success-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;"><i class="fas fa-check"></i></span>
+                    <div>
+                        <strong style="font-size: 1.125rem; color: var(--gray-900);">Healthy Chilli</strong>
+                        <p style="margin: 0.25rem 0 0; color: var(--gray-600);">Confirmed disease-free plant — no intervention required</p>
+                    </div>
+                </li>
+            </ul>
+
+            <h2 style="font-size: 1.7rem; font-weight: 600; margin: 3rem 0 2rem; color: var(--gray-900);">Model Performance</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+                <div style="text-align: center; padding: 2rem; background: var(--gray-50); border-radius: var(--radius-lg);">
+                    <div style="font-size: 2.8rem; font-weight: 600; color: var(--primary-color); margin-bottom: 0.5rem;">91.89%</div>
+                    <div style="color: var(--gray-600);">Test Accuracy</div>
+                </div>
+                <div style="text-align: center; padding: 2rem; background: var(--gray-50); border-radius: var(--radius-lg);">
+                    <div style="font-size: 2.8rem; font-weight: 600; color: var(--primary-color); margin-bottom: 0.5rem;">93.15%</div>
+                    <div style="color: var(--gray-600);">Precision</div>
+                </div>
+                <div style="text-align: center; padding: 2rem; background: var(--gray-50); border-radius: var(--radius-lg);">
+                    <div style="font-size: 2.8rem; font-weight: 600; color: var(--primary-color); margin-bottom: 0.5rem;">91.89%</div>
+                    <div style="color: var(--gray-600);">Recall</div>
+                </div>
+                <div style="text-align: center; padding: 2rem; background: var(--gray-50); border-radius: var(--radius-lg);">
+                    <div style="font-size: 2.8rem; font-weight: 600; color: var(--primary-color); margin-bottom: 0.5rem;">0.9252</div>
+                    <div style="color: var(--gray-600);">F1-Score</div>
+                </div>
+            </div>
+
+            <h2 style="font-size: 1.7rem; font-weight: 600; margin: 3rem 0 2rem; color: var(--gray-900);">Key Features</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+                <div style="padding: 1.5rem; background: var(--gray-50); border-radius: var(--radius-lg); border-left: 4px solid var(--primary-color);">
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--gray-900);">
+                        <i class="fas fa-chart-line"></i> Personal Analytics
+                    </h3>
+                    <p style="color: var(--gray-600); line-height: 1.6;">
+                        Logged-in users get a personal dashboard with prediction history, disease distribution charts, confidence trends, and disease risk insights.
+                    </p>
+                </div>
+                <div style="padding: 1.5rem; background: var(--gray-50); border-radius: var(--radius-lg); border-left: 4px solid var(--primary-color);">
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--gray-900);">
+                        <i class="fas fa-mobile-alt"></i> PWA & Mobile Camera
+                    </h3>
+                    <p style="color: var(--gray-600); line-height: 1.6;">
+                        Installable as a Progressive Web App on any device. Capture leaf images directly from your phone's camera for instant in-field diagnosis.
+                    </p>
+                </div>
+                <div style="padding: 1.5rem; background: var(--gray-50); border-radius: var(--radius-lg); border-left: 4px solid var(--primary-color);">
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--gray-900);">
+                        <i class="fas fa-robot"></i> Gemini AI Advice
+                    </h3>
+                    <p style="color: var(--gray-600); line-height: 1.6;">
+                        Every diagnosis is enriched by Google Gemini AI, providing detailed causes, treatment steps, and preventive recommendations tailored to the detected condition.
+                    </p>
+                </div>
+            </div>
+
+            <h2 style="font-size: 1.7rem; font-weight: 600; margin: 3rem 0 2rem; color: var(--gray-900);">Contact & Support</h2>
+            <p style="font-size: 1.125rem; line-height: 1.8; color: var(--gray-700); margin-bottom: 2rem;">
+                For questions, bug reports, or feature requests, contact us via our 
+                <a href="/contact"><strong>Contact page</strong></a> or reach us directly at 
+                <strong></strong>.
+            </p>
+        </div>
+    </section>
+    
+    <!-- Toast Notification -->
+    <div class="toast hidden" id="toast">
+        <div class="toast-content">
+            <i class="fas fa-check-circle"></i>
+            <span id="toastMessage">Success!</span>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Chatbase Chatbot -->
+<script>
+(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="CgkmkFtifEpgT2NTn4BfP";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+</script>
+{% endblock %}

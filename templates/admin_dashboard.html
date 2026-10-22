@@ -1,0 +1,810 @@
+{% extends "admin_base.html" %}
+
+{% set active_section = 'dashboard' %}
+
+{% block title %}Admin Dashboard | Chilli Care{% endblock %}
+
+{% block content %}
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobileSidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title" id="pageTitle">Welcome, Chilli Care!</h1>
+                </div>
+                <div class="header-right">
+                    <div class="update-indicator">
+                        <div class="update-dot"></div>
+                        <span class="update-time">Live</span>
+                        <button class="btn-refresh" id="manualRefreshBtn" title="Refresh dashboard">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <a href="/" class="btn-back-home">
+                        <i class="fas fa-home"></i>
+                        <span>Back to Home</span>
+                    </a>
+                </div>
+            </header>
+            
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Dashboard Section -->
+                <section class="content-section active" id="dashboardSection">
+                    <!-- Stats Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 class="stat-label">Total Farmers</h3>
+                                <p class="stat-value" id="totalFarmers">0</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 class="stat-label">Total Predictions</h3>
+                                <p class="stat-value" id="totalPredictions">0</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 class="stat-label">Total Places</h3>
+                                <p class="stat-value" id="totalPlaces">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chart Section
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h2 class="chart-title">AI Features Usage</h2>
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <span class="legend-dot validation"></span>
+                                    <span>Validation</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-dot chatbot"></span>
+                                    <span>Chatbot</span>
+                                </div>
+                            </div>
+                        </div>
+                        <canvas id="aiUsageChart"></canvas>
+                    </div>-->
+                    
+                    <!-- Recent Activity -->
+                    <div class="recent-activity">
+                        <h2 class="section-title">Recent Activity</h2>
+                        <div class="activity-list" id="activityList">
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </div>
+                                <div class="activity-info">
+                                    <p class="activity-text">Loading recent activity...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- User Management Section -->
+                <section class="content-section" id="usersSection">
+                    
+                    <!-- Filters and Search -->
+                    <div class="user-management-controls">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="userSearchInput" placeholder="Search Date..." class="search-input">
+                        </div>
+                        <div class="filter-group">
+                            <select id="userStatusFilter" class="filter-select">
+                                <option value="all">Status: All</option>
+                                <option value="online">Log In</option>
+                                <option value="offline">Log Out</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- User Table -->
+                    <div class="table-container">
+                        <table class="user-table">
+                            <thead>
+                                <tr>
+                                    <th>User ID</th>
+                                    <th>User</th>
+                                    <th>User Email</th>
+                                    <th>Password <i class="fas fa-lock"></i></th>
+                                    <th>Last Login</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userTableBody">
+                                <!-- User rows will be dynamically inserted here -->
+                                <tr class="loading-row">
+                                    <td colspan="6" class="text-center">
+                                        <i class="fas fa-spinner fa-spin"></i> Loading users...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="pagination-controls">
+                        <button class="btn-pagination" id="prevPageBtn" disabled>
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        <span class="page-info" id="pageInfo">Page 1 of 1</span>
+                        <button class="btn-pagination" id="nextPageBtn" disabled>
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- Disease Management Section -->
+                <section class="content-section" id="diseasesSection">
+                                        
+                    <!-- Disease Cards Grid -->
+                    <div class="disease-cards-grid">
+                        <!-- Healthy Disease Card -->
+                        <div class="disease-card" data-disease="healthy">
+                            <div class="disease-card-icon" onclick="openDiseaseModal('healthy')">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="disease-card-badge badge-green">100%</div>
+                            <h3 class="disease-card-title">Healthy</h3>
+                        </div>
+                        
+                        <!-- Whitefly Disease Card -->
+                        <div class="disease-card" data-disease="whitefly">
+                            <div class="disease-card-icon" onclick="openDiseaseModal('whitefly')">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="disease-card-badge badge-green">100%</div>
+                            <h3 class="disease-card-title">Whitefly</h3>
+                        </div>
+                        
+                        <!-- Anthacnose Disease Card -->
+                        <div class="disease-card" data-disease="anthacnose">
+                            <div class="disease-card-icon" onclick="openDiseaseModal('anthacnose')">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="disease-card-badge badge-green">94%</div>
+                            <h3 class="disease-card-title">Anthacnose</h3>
+                        </div>
+                        
+                        <!-- Yellowish Disease Card -->
+                        <div class="disease-card" data-disease="yellowish">
+                            <div class="disease-card-icon" onclick="openDiseaseModal('yellowish')">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="disease-card-badge badge-light-green">+90%</div>
+                            <h3 class="disease-card-title">Yellowish</h3>
+                        </div>
+                        
+                        <!-- Leaf Curl Virus Disease Card -->
+                        <div class="disease-card" data-disease="leafcurl">
+                            <div class="disease-card-icon" onclick="openDiseaseModal('leafcurl')">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="disease-card-badge badge-light-green">+70%</div>
+                            <h3 class="disease-card-title">Leaf Curl Virus</h3>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Prediction History Section -->
+                <section class="content-section" id="predictionsSection">
+                    <!-- Filters and Search -->
+                    <div class="prediction-controls">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="predictionSearchInput" placeholder="Search by disease, email, location..." class="search-input">
+                        </div>
+                        <div class="filter-group-predictions">
+                            <select id="diseaseFilter" class="filter-select">
+                                <option value="">All Diseases</option>
+                                <option value="Chilli___healthy">Healthy</option>
+                                <option value="Chilli __Whitefly">Whitefly</option>
+                                <option value="Chilli__Anthacnose">Anthacnose</option>
+                                <option value="Chilli __Yellowish">Yellowish</option>
+                                <option value="Chilli__Leaf_Curl_Virus">Leaf Curl Virus</option>
+                            </select>
+                            <select id="userTypeFilter" class="filter-select">
+                                <option value="">All Users</option>
+                                <option value="farmer">Farmers</option>
+                                <option value="admin">Admins</option>
+                            </select>
+                            <select id="confidenceFilter" class="filter-select">
+                                <option value="">All Confidence</option>
+                                <option value="high">High (>90%)</option>
+                                <option value="medium">Medium (70-90%)</option>
+                                <option value="low">Low (<70%)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Cards -->
+                    <div class="prediction-stats-grid">
+                        <div class="prediction-stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 class="stat-value" id="predictionTotalCount">0</h3>
+                                <p class="stat-label">Total Predictions</p>
+                            </div>
+                        </div>
+                        <div class="prediction-stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 class="stat-value" id="predictionAvgConfidence">0%</h3>
+                                <p class="stat-label">Average Confidence</p>
+                            </div>
+                        </div>
+                        <div class="prediction-stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 class="stat-value" id="predictionHealthyCount">0</h3>
+                                <p class="stat-label">Healthy Plants</p>
+                            </div>
+                        </div>
+                        <div class="prediction-stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 class="stat-value" id="predictionDiseaseCount">0</h3>
+                                <p class="stat-label">Diseased Plants</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Predictions Table -->
+                    <div class="table-container">
+                        <table class="prediction-table">
+                            <thead>
+                                <tr>
+                                    <th>Date & Time</th>
+                                    <th>User</th>
+                                    <th>Predicted Disease</th>
+                                    <th>Confidence</th>
+                                    <th>Location</th>
+                                    <th>Validation</th>
+                                </tr>
+                            </thead>
+                            <tbody id="predictionTableBody">
+                                <tr class="loading-row">
+                                    <td colspan="6" class="text-center">
+                                        <i class="fas fa-spinner fa-spin"></i> Loading predictions...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="pagination-controls">
+                        <button class="btn-pagination" id="predictionPrevPageBtn" disabled>
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        <span class="page-info" id="predictionPageInfo">Page 1 of 1</span>
+                        <button class="btn-pagination" id="predictionNextPageBtn" disabled>
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- District Mapping Section -->
+                <section class="content-section" id="mappingSection">
+                    <div class="mapping-header-bar">
+                        <div class="mapping-header-left">
+                        </div>
+                        <div class="mapping-controls">
+                            <button class="btn-refresh-mapping" id="refreshMappingBtn" title="Refresh map">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Filter Controls -->
+                    <div class="mapping-filters">
+                        <div class="filter-row">
+                            <div class="filter-group">
+                                <label for="countryFilter">
+                                    <i class="fas fa-globe"></i> Country
+                                </label>
+                                <select id="countryFilter" class="mapping-filter-select">
+                                    <option value="">All Countries</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="regionFilter">
+                                    <i class="fas fa-map"></i> Province/Region
+                                </label>
+                                <select id="regionFilter" class="mapping-filter-select">
+                                    <option value="">All Regions</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="cityFilter">
+                                    <i class="fas fa-city"></i> City
+                                </label>
+                                <select id="cityFilter" class="mapping-filter-select">
+                                    <option value="">All Cities</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <button class="btn-reset-filters" id="resetFiltersBtn">
+                                    <i class="fas fa-redo"></i> Reset Filters
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Statistics Cards -->
+                    <div class="mapping-stats-grid">
+                        <div class="mapping-stat-card">
+                            <div class="mapping-stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="mapping-stat-info">
+                                <h3 class="mapping-stat-value" id="mappingTotalLocations">0</h3>
+                                <p class="mapping-stat-label">Total Locations</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mapping-stat-card">
+                            <div class="mapping-stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="mapping-stat-info">
+                                <h3 class="mapping-stat-value" id="mappingTotalPredictions">0</h3>
+                                <p class="mapping-stat-label">Total Predictions</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mapping-stat-card">
+                            <div class="mapping-stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div class="mapping-stat-info">
+                                <h3 class="mapping-stat-value" id="mappingCountriesCount">0</h3>
+                                <p class="mapping-stat-label">Countries</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mapping-stat-card">
+                            <div class="mapping-stat-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                                <i class="fas fa-city"></i>
+                            </div>
+                            <div class="mapping-stat-info">
+                                <h3 class="mapping-stat-value" id="mappingCitiesCount">0</h3>
+                                <p class="mapping-stat-label">Cities</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Map Container -->
+                    <div class="mapping-container">
+                        <div id="predictionMap" class="prediction-map"></div>
+                    </div>
+                    
+                    <!-- Locations Table -->
+                    <div class="mapping-locations-section">
+                        <div class="mapping-section-header">
+                            <h3><i class="fas fa-list"></i> Locations Overview</h3>
+                            <p>Detailed list of prediction locations</p>
+                        </div>
+                        
+                        <div class="mapping-table-container">
+                            <table class="mapping-table">
+                                <thead>
+                                    <tr>
+                                        <th>City</th>
+                                        <th>Province/Region</th>
+                                        <th>Country</th>
+                                        <th>Predictions</th>
+                                        <th>Top Disease</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mappingTableBody">
+                                    <tr>
+                                        <td colspan="5" class="mapping-table-loading">
+                                            <i class="fas fa-spinner fa-spin"></i> Loading locations...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Empty State -->
+                        <div class="mapping-empty-state" id="mappingEmptyState" style="display: none;">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <h3>No Location Data Available</h3>
+                            <p>No predictions with valid location data found</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Loading Overlay -->
+                    <div class="mapping-loading-overlay" id="mappingLoadingOverlay" style="display: none;">
+                        <div class="mapping-loading-spinner"></div>
+                        <p>Loading map data...</p>
+                    </div>
+                    
+                    <!-- Error State -->
+                    <div class="mapping-error-state" id="mappingErrorState" style="display: none;">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <h3>Failed to load mapping data</h3>
+                        <p id="mappingErrorMessage">An error occurred while fetching location data.</p>
+                        <button class="btn-retry-mapping" onclick="loadMappingData()">
+                            <i class="fas fa-redo"></i> Retry
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- Analytics Section -->
+                <section class="content-section" id="analyticsSection">
+                    <div class="analytics-header-bar">
+                        <div class="analytics-header-left">
+                        </div>
+                        <div class="analytics-controls">
+                            <select id="analyticsTimePeriod" class="analytics-select">
+                                <option value="7">Last 7 Days</option>
+                                <option value="30" selected>Last 30 Days</option>
+                                <option value="90">Last 90 Days</option>
+                                <option value="all">All Time</option>
+                            </select>
+                            <button class="btn-refresh-analytics" id="refreshAnalyticsBtn" title="Refresh analytics">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Analytics Stats Grid -->
+                    <div class="analytics-stats-grid">
+                        <div class="analytics-stat-card">
+                            <div class="analytics-stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                <i class="fas fa-disease"></i>
+                            </div>
+                            <div class="analytics-stat-info">
+                                <h3 class="analytics-stat-value" id="analyticsTotalDiseases">0</h3>
+                                <p class="analytics-stat-label">Total Disease Detections</p>
+                            </div>
+                        </div>
+                        
+                        <div class="analytics-stat-card">
+                            <div class="analytics-stat-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                            <div class="analytics-stat-info">
+                                <h3 class="analytics-stat-value" id="analyticsHealthyPlants">0</h3>
+                                <p class="analytics-stat-label">Healthy Plants</p>
+                            </div>
+                        </div>
+                        
+                        <div class="analytics-stat-card">
+                            <div class="analytics-stat-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="analytics-stat-info">
+                                <h3 class="analytics-stat-value" id="analyticsMostCommonDisease">-</h3>
+                                <p class="analytics-stat-label">Most Common Disease</p>
+                                <p class="analytics-stat-sublabel" id="analyticsMostCommonCount">0 cases</p>
+                            </div>
+                        </div>
+                        
+                        <div class="analytics-stat-card">
+                            <div class="analytics-stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div class="analytics-stat-info">
+                                <h3 class="analytics-stat-value" id="analyticsLeastCommonDisease">-</h3>
+                                <p class="analytics-stat-label">Least Common Disease</p>
+                                <p class="analytics-stat-sublabel" id="analyticsLeastCommonCount">0 cases</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Charts Grid -->
+                    <div class="analytics-charts-container">
+                        <!-- Disease Distribution Chart -->
+                        <div class="analytics-chart-card">
+                            <div class="analytics-chart-header">
+                                <h3><i class="fas fa-chart-pie"></i> Disease Distribution (Excluding Healthy)</h3>
+                                <p>Breakdown of detected diseases</p>
+                            </div>
+                            <div class="analytics-chart-body">
+                                <canvas id="diseaseDistributionChart" class="analytics-chart"></canvas>
+                                <div id="noDataMessage" class="analytics-no-data" style="display: none;">
+                                    <i class="fas fa-chart-pie"></i>
+                                    <p>No disease data available</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Disease Comparison Chart -->
+                        <div class="analytics-chart-card">
+                            <div class="analytics-chart-header">
+                                <h3><i class="fas fa-chart-bar"></i> Disease Comparison</h3>
+                                <p>Compare disease detection counts</p>
+                            </div>
+                            <div class="analytics-chart-body">
+                                <canvas id="diseaseComparisonChart" class="analytics-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- All Predictions Overview -->
+                    <div class="analytics-predictions-section">
+                        <div class="analytics-section-header">
+                            <h3><i class="fas fa-list"></i> All Predictions Overview</h3>
+                            <p>Recent predictions from all users</p>
+                        </div>
+                        
+                        <div class="analytics-predictions-table-container">
+                            <table class="analytics-predictions-table">
+                                <thead>
+                                    <tr>
+                                        <th>Disease</th>
+                                        <th>Confidence</th>
+                                        <th>Location</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="analyticsPredictionsTableBody">
+                                    <tr>
+                                        <td colspan="4" class="analytics-table-loading">
+                                            <i class="fas fa-spinner fa-spin"></i> Loading predictions...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Empty State -->
+                        <div class="analytics-empty-state" id="analyticsEmptyState" style="display: none;">
+                            <i class="fas fa-inbox"></i>
+                            <h3>No Predictions Available</h3>
+                            <p>There are no predictions to display for the selected time period</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Loading Overlay -->
+                    <div class="analytics-loading-overlay" id="analyticsLoadingOverlay" style="display: none;">
+                        <div class="analytics-loading-spinner"></div>
+                        <p>Loading analytics data...</p>
+                    </div>
+                    
+                    <!-- Error State -->
+                    <div class="analytics-error-state" id="analyticsErrorState" style="display: none;">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <h3>Failed to load analytics data</h3>
+                        <p id="analyticsErrorMessage">An error occurred while fetching analytics data.</p>
+                        <button class="btn-retry-analytics" onclick="loadAnalyticsData()">
+                            <i class="fas fa-redo"></i> Retry
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- Messages Section -->
+                <section class="content-section" id="messagesSection">
+                    <div class="whatsapp-container">
+                        <!-- Left Sidebar - Conversations List -->
+                        <div class="whatsapp-sidebar">
+                            <div class="whatsapp-sidebar-header">
+                                <div class="whatsapp-header-content">
+                                    <h2><i class="fas fa-comment-dots"></i> Messages</h2>
+                                    <div class="whatsapp-header-actions">
+                                        <button class="whatsapp-icon-btn" id="refreshMessagesBtn" title="Refresh messages">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="whatsapp-search">
+                                <div class="whatsapp-search-input">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" id="messagesSearchInput" placeholder="Search or start new chat">
+                                </div>
+                            </div>
+                            
+                            <div class="whatsapp-conversations" id="conversationsList">
+                                <div class="loading-conversations">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <p>Loading conversations...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Side - Conversation View -->
+                        <div class="whatsapp-chat">
+                            <div class="whatsapp-empty" id="conversationEmpty">
+                                <div class="whatsapp-empty-content">
+                                    <i class="fas fa-comments"></i>
+                                    <h3>Conversation-Style Messaging</h3>
+                                    <p>Select a conversation from the left to start messaging</p>
+                                    <div class="whatsapp-empty-footer">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="whatsapp-conversation hidden" id="conversationView">
+                                <div class="whatsapp-chat-header">
+                                    <div class="whatsapp-chat-user">
+                                        <div class="whatsapp-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="whatsapp-user-info">
+                                            <h3 id="conversationUserName">User Name</h3>
+                                            <p id="conversationUserEmail">user@email.com</p>
+                                        </div>
+                                    </div>
+                                    <div class="whatsapp-chat-actions">
+                                        <button class="whatsapp-icon-btn" id="closeConversationBtn" title="Close">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="whatsapp-messages" id="conversationMessages">
+                                    <!-- Messages will be dynamically loaded here -->
+                                </div>
+                                
+                                <div class="whatsapp-footer">
+                                    <div class="whatsapp-input-area">
+                                        <button class="whatsapp-icon-btn whatsapp-emoji-btn" id="emojiPickerBtn" title="Emoji">
+                                            <i class="far fa-smile"></i>
+                                        </button>
+                                        <div class="whatsapp-input-wrapper">
+                                            <form id="replyForm" class="whatsapp-form">
+                                                <textarea 
+                                                    id="replyMessage" 
+                                                    class="whatsapp-input" 
+                                                    placeholder="Type a message"
+                                                    rows="1"
+                                                    required
+                                                ></textarea>
+                                                <button type="submit" class="whatsapp-send-btn" title="Send">
+                                                    <i class="fas fa-paper-plane"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <!-- Emoji Picker -->
+                                    <div class="whatsapp-emoji-picker hidden" id="emojiPicker">
+                                        <div class="emoji-picker-search">
+                                            <input type="text" id="emojiSearch" placeholder="Search emoji...">
+                                        </div>
+                                        <div class="emoji-picker-categories">
+                                            <button class="emoji-category active" data-category="smileys">😀</button>
+                                            <button class="emoji-category" data-category="gestures">👋</button>
+                                            <button class="emoji-category" data-category="animals">🐶</button>
+                                            <button class="emoji-category" data-category="food">🍕</button>
+                                            <button class="emoji-category" data-category="travel">✈️</button>
+                                            <button class="emoji-category" data-category="activities">⚽</button>
+                                            <button class="emoji-category" data-category="objects">💡</button>
+                                            <button class="emoji-category" data-category="symbols">❤️</button>
+                                        </div>
+                                        <div class="emoji-picker-content" id="emojiPickerContent">
+                                            <!-- Emojis will be loaded here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p>Loading dashboard...</p>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+    
+    <!-- Disease Detail Modal -->
+    <div class="disease-modal" id="diseaseModal">
+        <div class="disease-modal-overlay" onclick="closeDiseaseModal()"></div>
+        <div class="disease-modal-content">
+            <div class="disease-modal-header">
+                <h2 id="diseaseModalTitle">Disease Name</h2>
+                <div class="disease-modal-actions">
+                    <button class="btn-modal-edit" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn-modal-close" onclick="closeDiseaseModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="disease-modal-body">
+                <div class="disease-image-container">
+                    <img id="diseaseModalImage" src="" alt="Disease Image" 
+                         class="disease-modal-image" 
+                         loading="lazy" 
+                         decoding="async">
+                </div>
+                
+                <div class="disease-info-section">
+                    <h3>Name:</h3>
+                    <div id="diseaseModalName">-</div>
+                </div>
+                
+                <div class="disease-info-section">
+                    <h3>Causes:</h3>
+                    <ol id="diseaseModalCauses">
+                        <li>Loading...</li>
+                    </ol>
+                </div>
+                
+                <div class="disease-info-section">
+                    <h3>Description:</h3>
+                    <div id="diseaseModalDescription">-</div>
+                </div>
+                
+                <div class="disease-info-section">
+                    <h3>Organic Solutions:</h3>
+                    <ol id="diseaseModalSolutions">
+                        <li>Loading...</li>
+                    </ol>
+                </div>
+                
+                <div class="disease-info-section">
+                    <h3>Severity:</h3>
+                    <div id="diseaseModalSeverity">-</div>
+                </div>
+                
+                <div class="disease-info-section">
+                    <h3>Symptoms:</h3>
+                    <ol id="diseaseModalSymptoms">
+                        <li>Loading...</li>
+                    </ol>
+                </div>
+                
+                <div class="disease-info-section">
+                    <h3>Treatment:</h3>
+                    <ol id="diseaseModalTreatment">
+                        <li>Loading...</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="disease-modal-footer">
+                <button class="btn-modal-cancel" onclick="closeDiseaseModal()">Cancel</button>
+                <button class="btn-modal-save">Save</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/admin_dashboard.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+
+{% set active_page = 'contact' %}
+
+{% block title %}Contact Us | ChilliNexis {% endblock %}
+
+{% block meta %}
+<meta name="description" content="Get in touch with ChilliNexis. We're here to help farmers with plant disease detection and agricultural support.">
+{% endblock %}
+
+{% block content %}
+    <!-- Page Hero Banner -->
+    <section class="page-hero-banner">
+        <div class="page-hero-img" style="background-image: url('{{ url_for('static', filename='images/background.jpg') }}');"></div>
+        <div class="page-hero-fade"></div>
+        <div class="container page-hero-text">
+           
+            <h1>Contact Us</h1>
+        </div>
+    </section>
+
+    <!-- Contact Content Section -->
+    <section style="padding: 1.5rem 0 2.5rem; background: white;">
+        <div style="width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 4%; box-sizing: border-box;">
+            <div style="display: block; width: 100%;">
+                <!-- Contact Information -->
+                <div>
+                    <h2 style="font-size: 1.7rem; font-weight: 600; margin-bottom: 1rem; color: var(--gray-900);">Contact Information</h2>
+                    <p style="font-size: 1.125rem; line-height: 1.8; color: var(--gray-700); margin-bottom: 3rem;">
+                        ChilliNexis is a final-year academic project focused on chilli plant disease detection using deep learning and computer vision. The project also explores chilli market price insights to support informed farming decisions. We welcome your feedback, suggestions, and questions about our project.</p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;width: 100%">
+                       
+
+                        <!-- Phone -->
+                        <div style="display: flex; align-items: start; gap: 1.5rem;">
+                            <div style="width: 60px; height: 60px; background: var(--primary-light); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-users" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--gray-900);">Meet Our Project Team</h3>
+                                <p style="color: var(--gray-900); margin: 0.6rem 0; font-size: 0.95rem;">
+                                    The people behind ChilliNexis
+                                </p>
+                                <div style="margin-top: 0.75rem;">
+                                    <p style="color: var(--gray-600); margin: 0.6rem 0;">1. P VARSHITHA — 234E1A05E1</p>
+                                    <p style="color: var(--gray-600); margin: 0.6rem 0;">2. ARSAD ARZOO — 234E1A05F8</p>
+                                    <p style="color: var(--gray-600); margin: 0.6rem 0;">3. CHERUKURU SIVA MANIKANTA — 234E1A05B3</p>
+                                    <p style="color: var(--gray-600); margin: 0.6rem 0;">4. RANJANI KUMARI — 234E1A05G5</p>
+                                    <p style="color: var(--gray-600); margin: 0.6rem 0;">5. MANDYAM VENKAT DURGA PRASAD — 234E1A05E2</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    
+                        <!-- Location -->
+                        <div style="display: flex; align-items: start; gap: 1.5rem;">
+                            <div style="width: 60px; height: 60px; background: var(--primary-light); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-laptop-code" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--gray-900);">Academic Project</h3>
+                                <p style="color: var(--gray-900); margin: 0;">Final-Year B.Tech CSE Project</p>
+                                <p style="color: var(--gray-600); margin: 0;">ChilliNexis – An Integrated Deep Learning Framework for Chilli Plant Disease Detection and Agricultural Decision Support</p>
+                            </div>
+                        </div>
+
+                        <!-- Working Hours -->
+                        <div style="display: flex; align-items: start; gap: 1.5rem;">
+                            <div style="width: 60px; height: 60px; background: var(--primary-light); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-seedling" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--gray-900);">Project Overview</h3>
+                                <p style="color: var(--gray-900); margin: 0;">Project at a Glance</p>
+                                <p style="color: var(--gray-600); margin: 0;">  An intelligent system that combines deep learning and computer vision to identify chilli plant diseases and explore market-price insights for informed farming decisions.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                </div>
+
+                
+                        
+
+                        
+                       
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <!-- Toast Notification -->
+    <div class="toast hidden" id="toast">
+        <div class="toast-content">
+            <i class="fas fa-check-circle"></i>
+            <span id="toastMessage">Success!</span>
+        </div>
+    </div>    
+
+    <style>
+    .contact-info-strip {
+        padding: 3.5rem 0;
+        background: #fff;
+        border-top: 1px solid var(--gray-200);
+        border-bottom: 1px solid var(--gray-200);
+    }
+    .contact-info-grid {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .contact-info-item {
+        flex: 1;
+        text-align: center;
+        padding: 1rem 2.5rem;
+    }
+    .contact-info-item i {
+        font-size: 2rem;
+        color: var(--gray-700);
+        margin-bottom: 1rem;
+        display: block;
+    }
+    .contact-info-item h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: 0.4rem;
+    }
+    .contact-info-item p {
+        font-size: 0.9rem;
+        color: var(--gray-500);
+        margin: 0;
+        line-height: 1.6;
+    }
+    .contact-info-divider {
+        width: 1px;
+        height: 80px;
+        background: var(--gray-200);
+        flex-shrink: 0;
+    }
+    @media (max-width: 768px) {
+        .contact-info-grid { flex-direction: column; }
+        .contact-info-divider { width: 80px; height: 1px; margin: 0.5rem 0; }
+    }
+    </style>
+
+{% endblock %}
+
+{% block extra_js %}
+    <!-- Contact Form Handler -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const contactForm = document.getElementById('contactForm');
+        const messageDiv = document.getElementById('contactFormMessage');
+        
+        // Focus styling for form inputs
+        const inputs = contactForm.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.borderColor = 'var(--primary-color)';
+            });
+            input.addEventListener('blur', function() {
+                this.style.borderColor = 'var(--gray-200)';
+            });
+        });
+        
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('contactName').value,
+               
+                subject: document.getElementById('contactSubject').value,
+                
+            };
+            
+            // Show loading state
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitBtn.disabled = true;
+            
+            // Hide any previous messages
+            messageDiv.className = 'hidden';
+            
+            // Send to API
+            fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Success
+                    messageDiv.className = '';
+                    messageDiv.style.background = 'var(--success-light)';
+                    messageDiv.style.color = 'var(--success-color)';
+                    messageDiv.style.border = '1px solid var(--success-color)';
+                    messageDiv.innerHTML = '<i class="fas fa-check-circle"></i> ' + data.message;
+                    
+                    // Reset form
+                    contactForm.reset();
+                } else {
+                    // Error
+                    messageDiv.className = '';
+                    messageDiv.style.background = '#FEE2E2';
+                    messageDiv.style.color = '#DC2626';
+                    messageDiv.style.border = '1px solid #DC2626';
+                    messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + data.message;
+                }
+                
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                // Hide message after 5 seconds
+                setTimeout(() => {
+                    messageDiv.className = 'hidden';
+                }, 5000);
+            })
+            .catch(error => {
+                // Network or other error
+                messageDiv.className = '';
+                messageDiv.style.background = '#FEE2E2';
+                messageDiv.style.color = '#DC2626';
+                messageDiv.style.border = '1px solid #DC2626';
+                messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Sorry, there was an error. Please try again later.';
+                
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                console.error('Contact form error:', error);
+            });
+        });
+        
+        // Social media hover effects
+        const socialLinks = document.querySelectorAll('a[href="#"]');
+        socialLinks.forEach(link => {
+            link.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.1)';
+            });
+            link.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    });
+    </script>
+    
+    <!-- Responsive CSS -->
+    <style>
+    @media (max-width: 768px) {
+        [style*="grid-template-columns: 1fr 1fr"] {
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
+        }
+    }
+    </style>
+
+    <!-- Chatbase Chatbot -->
+    <script>
+    (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="CgkmkFtifEpgT2NTn4BfP";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+    </script>    
+{% endblock %}

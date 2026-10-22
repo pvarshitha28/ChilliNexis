@@ -1,0 +1,430 @@
+{% extends "base.html" %}
+
+{% set active_page = 'price_prediction' %}
+
+{% block meta %}
+<meta name="description" content="Real Indian Agricultural Market (Agmarknet) Chilli & Mandi Price Prediction & Yield Valuation System. Analyze live prices across APMC mandis.">
+{% endblock %}
+
+{% block title %}Indian Mandi Price Prediction | Chilli Care{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/price_prediction.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Page Hero Banner -->
+<section class="page-hero-banner">
+    <div class="page-hero-img" style="background-image: url('{{ url_for('static', filename='images/background.jpg') }}');"></div>
+    <div class="page-hero-fade"></div>
+    <div class="container page-hero-text">
+        
+        <h1>Indian APMC Mandi Market Price Intelligence</h1>
+        <p class="hero-subtext">Live agricultural mandi analysis across States, Districts, APMC Markets & Quality Grades with Disease Financial Risk Valuation</p>
+    </div>
+</section>
+
+<!-- Main Container -->
+<section class="price-pred-section">
+    <div class="container">
+
+        <!-- Top Ticker Strip (Real Agmarknet Highlights) -->
+        <div class="market-ticker-strip">
+            <div class="ticker-badge">
+                <span class="ticker-dot"></span> Real APMC Mandi Rates
+            </div>
+            <div class="ticker-items" id="tickerItems">
+                <div class="ticker-item">
+                    <span class="t-name">Dry Chillies (Guntur APMC, AP)</span>
+                    <span class="t-val">Rs. 24,500/Q (Rs. 245/kg)</span>
+                    <span class="t-chg up"><i class="fas fa-arrow-up"></i> Premium</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="t-name">Chili Red (Gurazala APMC, Palnadu)</span>
+                    <span class="t-val">Rs. 19,500/Q (Rs. 195/kg)</span>
+                    <span class="t-chg up"><i class="fas fa-arrow-up"></i> High</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="t-name">Green Chilli (Damnagar APMC, Gujarat)</span>
+                    <span class="t-val">Rs. 5,500/Q (Rs. 55/kg)</span>
+                    <span class="t-chg stable"><i class="fas fa-minus"></i> Stable</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="t-name">Green Chilli (Palamaner APMC, Chittoor)</span>
+                    <span class="t-val">Rs. 3,500/Q (Rs. 35/kg)</span>
+                    <span class="t-chg stable"><i class="fas fa-check"></i> FAQ</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Two Column Predictor Layout -->
+        <div class="predictor-grid">
+            
+            <!-- Left: Real Indian Mandi Form -->
+            <div class="predictor-form-card">
+                <div class="card-header-styled">
+                    <div class="header-icon"><i class="fas fa-building-columns"></i></div>
+                    <div>
+                        <h2>APMC Mandi Price Calculator</h2>
+                        <p>Select your State, District, Mandi & Crop parameters</p>
+                    </div>
+                </div>
+
+                <form id="pricePredictForm" class="price-form">
+                    
+                    <!-- State Selection -->
+                    <div class="form-field">
+                        <label for="stateSelect">
+                            <i class="fas fa-map-location-dot"></i> State
+                        </label>
+                        <select id="stateSelect" name="state" class="form-select">
+                            <option value="">Loading States...</option>
+                        </select>
+                    </div>
+
+                    <!-- District Selection -->
+                    <div class="form-field">
+                        <label for="districtSelect">
+                            <i class="fas fa-location-crosshairs"></i> District
+                        </label>
+                        <select id="districtSelect" name="district" class="form-select">
+                            <option value="">Select State First</option>
+                        </select>
+                    </div>
+
+                    <!-- Market / APMC Selection -->
+                    <div class="form-field">
+                        <label for="marketSelect">
+                            <i class="fas fa-store"></i> APMC Market (Mandi)
+                        </label>
+                        <select id="marketSelect" name="market" class="form-select">
+                            <option value="">Select District First</option>
+                        </select>
+                    </div>
+
+                    <!-- Commodity Selection -->
+                    <div class="form-field">
+                        <label for="commoditySelect">
+                            <i class="fas fa-pepper-hot"></i> Commodity
+                        </label>
+                        <select id="commoditySelect" name="commodity" class="form-select">
+                            <option value="">Loading Commodities...</option>
+                        </select>
+                    </div>
+
+                    <!-- Variety & Grade Row -->
+                    <div class="form-row-grid">
+                        <div class="form-field">
+                            <label for="varietySelect">
+                                <i class="fas fa-seedling"></i> Variety
+                            </label>
+                            <select id="varietySelect" name="variety" class="form-select">
+                                <option value="">Select Commodity First</option>
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label for="gradeSelect">
+                                <i class="fas fa-certificate"></i> Quality Grade
+                            </label>
+                            <select id="gradeSelect" name="grade" class="form-select">
+                                <option value="">Select Variety First</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Quantity with Unit Selector -->
+                    <div class="form-field">
+                        <div class="label-with-presets">
+                            <label for="harvestQuantity"><i class="fas fa-weight-hanging"></i> Harvest Quantity</label>
+                            <div class="unit-toggle">
+                                <label><input type="radio" name="qtyUnit" value="kg" checked> kg</label>
+                                <label><input type="radio" name="qtyUnit" value="quintal"> Quintal (100 kg)</label>
+                            </div>
+                        </div>
+                        <input type="number" id="harvestQuantity" name="quantity" class="form-input" min="1" max="100000" value="500" step="1">
+                        <div class="preset-chips">
+                            <button type="button" class="preset-chip" data-qty="100">100 kg (1 Q)</button>
+                            <button type="button" class="preset-chip" data-qty="250">250 kg (2.5 Q)</button>
+                            <button type="button" class="preset-chip active" data-qty="500">500 kg (5 Q)</button>
+                            <button type="button" class="preset-chip" data-qty="1000">1,000 kg (10 Q)</button>
+                            <button type="button" class="preset-chip" data-qty="2500">2,500 kg (25 Q)</button>
+                            <button type="button" class="preset-chip" data-qty="5000">5,000 kg (50 Q)</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-predict-now" id="btnPredictPrice">
+                        <i class="fas fa-chart-line"></i> Analyze Mandi Price & Crop Value
+                    </button>
+                </form>
+            </div>
+
+            <!-- Right: Real Agmarknet Forecast Results -->
+            <div class="predictor-results-card">
+                <div class="card-header-styled">
+                    <div class="header-icon green"><i class="fas fa-chart-pie"></i></div>
+                    <div>
+                        <h2>Real Mandi Intelligence</h2>
+                        <p id="resultSubtitle">Agmarknet Verified Market Data</p>
+                    </div>
+                </div>
+
+                <!-- Main Metrics Display -->
+                <div class="metrics-hero-row">
+                    <!-- Modal Price per kg -->
+                    <div class="metric-box primary">
+                        <span class="metric-label">Modal Price / kg</span>
+                        <div class="metric-number-row">
+                            <span class="metric-currency">₹</span>
+                            <span class="metric-number" id="predictedPriceKg">--</span>
+                        </div>
+                        <span class="metric-sub" id="priceRangeTextKg">Range: ₹-- – ₹-- / kg</span>
+                    </div>
+
+                    <!-- Modal Price per Quintal -->
+                    <div class="metric-box highlight">
+                        <span class="metric-label">Modal Price / Quintal (100 kg)</span>
+                        <div class="metric-number-row">
+                            <span class="metric-currency">₹</span>
+                            <span class="metric-number" id="predictedPriceQtl">--</span>
+                        </div>
+                        <span class="metric-sub" id="priceRangeTextQtl">Range: ₹-- – ₹-- / Quintal</span>
+                    </div>
+                </div>
+
+                <!-- Total Estimated Revenue -->
+                <div class="total-revenue-banner">
+                    <div class="rev-label">Estimated Total Harvest Value</div>
+                    <div class="rev-amount">₹<span id="predictedTotalRevenue">--</span></div>
+                    <div class="rev-qty" id="totalQtyText">For entered quantity</div>
+                </div>
+
+                <!-- Market Location Pills -->
+                <div class="status-badges-row">
+                    <div class="status-pill market" id="locationPill">
+                        <i class="fas fa-location-dot"></i>
+                        <span id="locationText">Loading Mandi...</span>
+                    </div>
+                    <div class="status-pill quality" id="gradePill">
+                        <i class="fas fa-check-circle"></i>
+                        <span id="gradeText">Grade: FAQ</span>
+                    </div>
+                    <div class="status-pill demand" id="datePill">
+                        <i class="fas fa-calendar-check"></i>
+                        <span id="dateText">Reported Date: 2026-07-02</span>
+                    </div>
+                </div>
+
+                <!-- Disease Financial Risk Banner (Real Impact) -->
+                <div class="disease-loss-alert" id="diseaseLossAlert">
+                    <div class="alert-icon"><i class="fas fa-triangle-exclamation"></i></div>
+                    <div class="alert-text">
+                        <h4>Disease Financial Impact Warning</h4>
+                        <p id="diseaseLossMsg">
+                            Untreated <strong>Anthracnose Fruit Rot</strong> or <strong>Leaf Curl Virus</strong> severely downgrades pods to discard grade, reducing wholesale returns by <strong>65% to 75%</strong> (an estimated financial loss of ₹<span id="lossAmount">--</span>). Protect your crop with early AI detection!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 4-Week Trend Graph (Visual Bars) -->
+                <div class="forecast-chart-container">
+                    <div class="chart-header">
+                        <h4><i class="fas fa-chart-simple"></i> Price Range & Spot Trend</h4>
+                        <span class="chart-period">₹ per kg</span>
+                    </div>
+                    <div class="forecast-bars" id="forecastBars">
+                        <!-- Bars dynamically rendered -->
+                    </div>
+                </div>
+
+                <!-- Agricultural Advisory Note -->
+                <div class="market-advisory-box">
+                    <i class="fas fa-lightbulb"></i>
+                    <div>
+                        <strong>Indian Agricultural Market Advisory:</strong>
+                        <p id="marketTipText">Mandi prices are reported directly from registered APMC economic sub-yards under Agmarknet standards. Maintain strict disease management to secure FAQ (Fair Average Quality) and Grade A wholesale bidding rates.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Section 2: Real Indian APMC Mandi Live Price Board -->
+        <div class="market-rates-section">
+            <div class="section-title-wrap">
+                <div class="table-header-flex">
+                    <div>
+                        <h2><i class="fas fa-building-columns"></i> Live Indian Mandi Price Board (Agmarknet Dataset)</h2>
+                        <p>Browse real wholesale market quotes across 2,000+ Indian APMC market trading records</p>
+                    </div>
+                    <div class="table-filter-inputs">
+                        <input type="text" id="tableSearchInput" placeholder="Quick search commodity, market, state…" class="table-search-input">
+                        <select id="tableCommodityFilter" class="table-select-filter">
+                            <option value="">All Commodities</option>
+                            <option value="Green Chilli" selected>Green Chilli</option>
+                            <option value="Dry Chillies">Dry Chillies</option>
+                            <option value="Chili Red">Chili Red</option>
+                            <option value="Capsicum">Capsicum</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="market-table" id="mandiDataTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>State</th>
+                            <th>District</th>
+                            <th>Market (APMC)</th>
+                            <th>Commodity</th>
+                            <th>Variety</th>
+                            <th>Grade</th>
+                            <th>Min (₹/Q)</th>
+                            <th>Max (₹/Q)</th>
+                            <th>Modal (₹/Q)</th>
+                            <th>Modal (₹/kg)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mandiTableBody">
+                        <tr>
+                            <td colspan="11" style="text-align:center;padding:2rem;">
+                                <i class="fas fa-spinner fa-spin"></i> Loading real Mandi records...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Table Pagination -->
+            <div class="table-pagination-row">
+                <span id="tablePageInfo">Showing records...</span>
+                <div class="pagination-buttons">
+                    <button class="btn-page" id="btnPrevPage" disabled><i class="fas fa-chevron-left"></i> Previous</button>
+                    <button class="btn-page" id="btnNextPage">Next <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Disease Financial Loss Protection Matrix -->
+        <div class="disease-loss-matrix-section">
+            <div class="section-title-wrap">
+                <h2><i class="fas fa-money-bill-trend-up"></i> Chilli Disease Downgrade & Farm Revenue Protection Matrix</h2>
+                <p>Real market proof: How timely AI diagnosis protects your harvest price at the Mandi auction</p>
+            </div>
+
+            <div class="matrix-cards-grid">
+                <!-- Healthy -->
+                <div class="matrix-card healthy">
+                    <div class="matrix-header">
+                        <span class="m-badge">FAQ / Grade A</span>
+                        <i class="fas fa-shield-heart"></i>
+                    </div>
+                    <h3>Chilli Healthy</h3>
+                    <div class="m-stat">
+                        <span class="stat-num">100% Value</span>
+                        <span class="stat-desc">Top APMC Auction Bid</span>
+                    </div>
+                    <ul class="m-list">
+                        <li><i class="fas fa-check"></i> Highest modal bidding price</li>
+                        <li><i class="fas fa-check"></i> Eligible for export & retail sorting</li>
+                        <li><i class="fas fa-check"></i> Zero weight or moisture rejection</li>
+                    </ul>
+                </div>
+
+                <!-- Whitefly -->
+                <div class="matrix-card pest">
+                    <div class="matrix-header">
+                        <span class="m-badge">Grade B / Local</span>
+                        <i class="fas fa-bug"></i>
+                    </div>
+                    <h3>Chilli Whitefly Infestation</h3>
+                    <div class="m-stat">
+                        <span class="stat-num danger">-35% to -50%</span>
+                        <span class="stat-desc">Yield & Grade Markdown</span>
+                    </div>
+                    <ul class="m-list">
+                        <li><i class="fas fa-triangle-exclamation"></i> Sticky honeydew & sooty mold</li>
+                        <li><i class="fas fa-triangle-exclamation"></i> Downgraded from FAQ to Local</li>
+                        <li><i class="fas fa-triangle-exclamation"></i> Vector for incurable Leaf Curl</li>
+                    </ul>
+                </div>
+
+                <!-- Yellowish -->
+                <div class="matrix-card nutrient">
+                    <div class="matrix-header">
+                        <span class="m-badge">Chlorosis / Nutrient</span>
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Chilli Yellowish (Chlorosis)</h3>
+                    <div class="m-stat">
+                        <span class="stat-num danger">-40% to -60%</span>
+                        <span class="stat-desc">Volume & Pod Shrinkage</span>
+                    </div>
+                    <ul class="m-list">
+                        <li><i class="fas fa-triangle-exclamation"></i> Underdeveloped pods & light weight</li>
+                        <li><i class="fas fa-triangle-exclamation"></i> Premature flower/leaf dropping</li>
+                        <li><i class="fas fa-triangle-exclamation"></i> Reversible if corrected early</li>
+                    </ul>
+                </div>
+
+                <!-- Anthracnose -->
+                <div class="matrix-card fungal">
+                    <div class="matrix-header">
+                        <span class="m-badge">Grade Range-3</span>
+                        <i class="fas fa-biohazard"></i>
+                    </div>
+                    <h3>Chilli Anthracnose (Fruit Rot)</h3>
+                    <div class="m-stat">
+                        <span class="stat-num extreme">-65% to -75%</span>
+                        <span class="stat-desc">Severe Rejection Loss</span>
+                    </div>
+                    <ul class="m-list">
+                        <li><i class="fas fa-xmark"></i> Black sunken circular lesions</li>
+                        <li><i class="fas fa-xmark"></i> Guntur price drops from ₹245 to ₹115/kg</li>
+                        <li><i class="fas fa-xmark"></i> Direct rejection at grading table</li>
+                    </ul>
+                </div>
+
+                <!-- Leaf Curl -->
+                <div class="matrix-card viral">
+                    <div class="matrix-header">
+                        <span class="m-badge">Crop Destruction</span>
+                        <i class="fas fa-virus"></i>
+                    </div>
+                    <h3>Chilli Leaf Curl Virus</h3>
+                    <div class="m-stat">
+                        <span class="stat-num extreme">-75% to -90%</span>
+                        <span class="stat-desc">Catastrophic Harvest Loss</span>
+                    </div>
+                    <ul class="m-list">
+                        <li><i class="fas fa-xmark"></i> Stunted bushes with zero productive pods</li>
+                        <li><i class="fas fa-xmark"></i> Severe curl and brittle foliage</li>
+                        <li><i class="fas fa-xmark"></i> Total commercial loss across acre</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="matrix-cta-box">
+                <div class="cta-inner">
+                    <div class="cta-text">
+                        <h3>Spot diseased leaves early to protect your Mandi selling price!</h3>
+                        <p>Upload a leaf image or take a photo with your phone for instant AI disease identification.</p>
+                    </div>
+                    <a href="/" class="btn btn-primary btn-large">
+                        <i class="fas fa-camera"></i> Scan Plant for Disease Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/price_prediction.js') }}"></script>
+{% endblock %}
